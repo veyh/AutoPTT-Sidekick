@@ -1,0 +1,11 @@
+*.elf
+*.hex
+*.lss
+*.map
+*.sym
+*.eep
+*.bin
+cfg.mk
+
+/build
+/obj

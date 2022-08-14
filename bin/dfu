@@ -1,0 +1,57 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+#
+# enter dfu bootloader like so
+#
+# a. Plug the Minimus into the USB port of your PC.
+# b. Press and hold the RESET button.
+# c. Press and hold the HWB button.
+# d. Release the RESET button.
+# e. Release the HWB button.
+#
+
+# @cmd
+# @flag  --debug
+flash-erase() {
+  argc_hex=$(realpath "${argc_hex-}")
+
+  local args=()
+
+  if [[ -n "${argc_debug-}" ]]; then
+    args+=(--debug=300)
+  fi
+
+  sudo dfu-programmer at90usb162 erase "${args[@]}"
+}
+
+# @cmd
+# @flag  --debug
+# @arg   hex!
+flash-write() {
+  argc_hex=$(realpath "${argc_hex-}")
+
+  local args=()
+
+  if [[ -n "${argc_debug-}" ]]; then
+    args+=(--debug=300)
+  fi
+
+  sudo dfu-programmer at90usb162 erase "${args[@]}"
+  sudo dfu-programmer at90usb162 flash "${args[@]}" "${argc_hex}"
+}
+
+# @cmd
+# @flag  --debug
+flash-read() {
+  local args=()
+
+  if [[ -n "${argc_debug-}" ]]; then
+    args+=(--debug=300)
+  fi
+
+  sudo dfu-programmer at90usb162 read "${args[@]}"
+}
+
+eval "$(argc "$0" "$@")"
