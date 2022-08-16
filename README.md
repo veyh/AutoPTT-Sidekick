@@ -12,9 +12,13 @@ The Sparkfun Pro Micro doesn't have a reset button though, so instead, you'll ha
 
 Source: https://learn.sparkfun.com/tutorials/pro-micro--fio-v3-hookup-guide#ts-reset
 
+## Releases
+
+You can download prebuilt binaries from [Github](https://github.com/veyh/AutoPTT-Sidekick/releases). They are built with USB Vendor ID `0x1209` and Product ID `0xE1E1`, generously provided by [https://pid.codes/](pid.codes).
+
 ## Build it yourself
 
-Since I don't have a USB VID (Vendor ID) or a PID (Product ID), I can't distribute this in binary form. You have to build it for yourself with some VID/PID combination. You can use whatever you want, as long as the VID/PID associates with a compatible driver. Not all of them do.
+You can also build the binary yourself in case you want to make changes.
 
 Requirements
 
@@ -23,7 +27,7 @@ Requirements
 - [docker](https://docs.docker.com/get-docker/)
 - [earthly](https://earthly.dev/get-earthly)
 
-Copy `cfg.example.mk` to `cfg.mk`, then edit `CFG_VENDOR_ID` and `CFG_PRODUCT_ID` accordingly.
+Copy `cfg.example.mk` to `cfg.mk`, then edit the values accordingly.
 
 The ItsyBitsy build should work for pretty much any ATmega32u4 board. Once you have set up `cfg.mk`, run:
 
