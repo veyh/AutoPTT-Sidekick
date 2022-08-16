@@ -14,7 +14,9 @@ Source: https://learn.sparkfun.com/tutorials/pro-micro--fio-v3-hookup-guide#ts-r
 
 ## Releases
 
-You can download prebuilt binaries from [Github](https://github.com/veyh/AutoPTT-Sidekick/releases). They are built with USB Vendor ID `0x1209` and Product ID `0xE1E1`, generously provided by [https://pid.codes/](pid.codes).
+You can download prebuilt binaries from [Github](https://github.com/veyh/AutoPTT-Sidekick/releases). They are built with USB Vendor ID `0x1209` and Product ID `0xE1E1`, generously provided by [pid.codes](https://pid.codes/).
+
+The ItsyBitsy build should work for pretty much any ATmega32u4 board.
 
 ## Build it yourself
 
@@ -27,15 +29,13 @@ Requirements
 - [docker](https://docs.docker.com/get-docker/)
 - [earthly](https://earthly.dev/get-earthly)
 
-Copy `cfg.example.mk` to `cfg.mk`, then edit the values accordingly.
-
-The ItsyBitsy build should work for pretty much any ATmega32u4 board. Once you have set up `cfg.mk`, run:
+Copy `cfg.example.mk` to `cfg.mk`, then edit the values accordingly. Once you're done with that, run
 
 ```bash
 earthly +build
 ```
 
-If everything goes as planned, you'll find an `itsy-bitsy.hex` in the `build/earthly` directory.
+If everything goes as planned, you'll find `itsy-bitsy.hex` and `minimus.hex` in the `build/earthly` directory.
 
 ## Flash it
 
