@@ -20,7 +20,7 @@ static struct {
 } self;
 
 _Static_assert(
-  sizeof(self.buf) < sizeof(self.buf_used) * 256,
+  sizeof(self.buf) < (1 << (8 * sizeof(self.buf_used))),
   "the type of self.buf_used is too small"
 );
 
