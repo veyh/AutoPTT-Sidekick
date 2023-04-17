@@ -108,6 +108,31 @@ add_compile_options(
   # -Wpadded
 )
 
+include(CheckCCompilerFlag)
+check_c_compiler_flag(-masm=intel COMPILER_SUPPORTS_INTEL_ASM)
+check_c_compiler_flag(-fverbose-asm COMPILER_SUPPORTS_VERBOSE_ASM)
+
+if (COMPILER_SUPPORTS_INTEL_ASM AND COMPILER_SUPPORTS_VERBOSE_ASM)
+  # To improve readability of generated x86 assembly files, use verbose Intel
+  # syntax.
+  #
+  # With CMake, you can generate said assembly files by listing the targets
+  #
+  #   remake --targets | grep '\.s$'
+  #
+  # then you make one of those targets
+  #
+  #   make src/foo.s
+  #
+  # It will print where the generated file is, eg.
+  #
+  #   Compiling C source to assembly CMakeFiles/binary.dir/src/foo.c.s
+  #
+  # so then you just open that in your editor.
+
+  add_compile_options(-masm=intel -fverbose-asm)
+endif()
+
 if (CMAKE_C_COMPILER_ID STREQUAL GNU
 AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL 7)
   add_compile_options(
