@@ -106,6 +106,9 @@ add_compile_options(
   # -Wundef
   # -Wconversion
   # -Wpadded
+
+  # -Wlarger-than=100
+  # -Wstack-usage=512
 )
 
 include(CheckCCompilerFlag)
