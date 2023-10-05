@@ -6,7 +6,7 @@ I made this for [AutoPTT](https://github.com/veyh/AutoPTT) because some games li
 
 I initially implemented this for an old AT90USB162 board (Minimus V1) as a proof of concept. Since that board isn't really available anywhere anymore, I also implemented it for basically any ATmega32u4-based board. I've tried it on a [Sparkfun Pro Micro](https://www.sparkfun.com/products/12640) and an [Adafruit ItsyBitsy](https://www.adafruit.com/product/3677), both of which are easily available and affordable.
 
-Note that if you flash this on an Arduino, it will make the Arduino IDE unable to flash it again because it won't be able to tell the device to enter the bootloader. But you can force the device to enter the bootloader by pressing the reset button twice.
+**Note that once this is flashed on an Arduino, further attempts at flashing will require you to manually enter the bootloader by pressing the reset button twice** as the Arduino desktop application will no longer be able to do it automatically.
 
 The Sparkfun Pro Micro doesn't have a reset button though, so instead, you'll have to connect the RST and GND pins (which is what the button would have done).
 
@@ -38,35 +38,49 @@ earthly +build
 If everything goes as planned, you'll find `itsy-bitsy.hex` and `minimus.hex` in the `build/earthly` directory.
 
 ## Flash it
+### On an Arduino
 
-You should be able to flash the hex to an Arduino, directly from Arduino IDE.
+**Reminder: To manually enter the bootloader, press the reset button twice!**
 
-You can also do it from the command line with `arduino-cli`. Example, for Adafruit ItsyBitsy:
+For example, this is how you would do it on an Adafruit ItsyBitsy:
+
+Install [arduino-cli](https://arduino.github.io/arduino-cli), then do the initial setup
 
 ```bash
-# setup
 arduino-cli config init
 arduino-cli config add board_manager.additional_urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
 arduino-cli core update-index
 arduino-cli core install arduino:avr
 arduino-cli core install adafruit:avr
-
-# flash - note that you might need to change /dev/ttyACM0 to something else
-arduino-cli upload -v \
-  -b adafruit:avr:itsybitsy32u4_5V \
-  -p /dev/ttyACM0 \
-  -i build/earthly/itsy-bitsy.hex
 ```
 
-**Remember, flashing an Arduino after this software is already on it will require you to manually enter the bootloader!**
+This is how you would flash it on Linux, provided that the USB device is at `/dev/ttyACM0` and `itsy-bitsy.hex` is in the current directory.
+
+```bash
+arduino-cli upload -v -b adafruit:avr:itsybitsy32u4_5V -p /dev/ttyACM0 -i itsy-bitsy.hex
+```
+
+On Windows, the command is very similar, but the device will be `COM1` or something like that. You can find that out by opening Device Manger and looking under `Ports (COM & LPT)` while the device is in bootloader. It will most likely be `COM1`.
+
+```bash
+arduino-cli upload -v -b adafruit:avr:itsybitsy32u4_5V -p COM1 -i itsy-bitsy.hex
+```
+
+[This short video](https://youtu.be/uYgZXsn3ugg) demonstrates flashing on Windows.
+
+### On a Minimus
 
 In case you happen to have a Minimus board, you can use `dfu-programmer`.
 
-```bash
-# setup
-sudo apt-get install -y dfu-programmer
+Install dfu-programmer with
 
-# flash
+```bash
+sudo apt-get install -y dfu-programmer
+```
+
+Then use it to first erase and then flash the device
+
+```bash
 sudo dfu-programmer at90usb162 erase
 sudo dfu-programmer at90usb162 flash build/earthly/minimus.hex
 ```
