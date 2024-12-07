@@ -44,9 +44,11 @@ struct const_fatptr_s {
   #undef realloc
   #undef free
 
-  #undef assert
-  #define assert(expression) \
-    mock_assert((ssize_t)(expression), #expression, __FILE__, __LINE__)
+  #ifndef LINTING
+    #undef assert
+    #define assert(expression) \
+      mock_assert((ssize_t)(expression), #expression, __FILE__, __LINE__)
+  #endif
 
   // for custom errors
   extern void cm_print_error(const char * const format, ...);
