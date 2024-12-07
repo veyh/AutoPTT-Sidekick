@@ -13,6 +13,11 @@
 #include <iso646.h>
 #include <inttypes.h>
 
+#if defined(_MSC_VER)
+  #include <BaseTsd.h>
+  typedef SSIZE_T ssize_t;
+#endif
+
 struct fatptr_s {
   union {
     void *data;
