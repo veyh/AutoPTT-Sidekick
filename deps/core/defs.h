@@ -121,6 +121,7 @@ struct const_fatptr_s {
 
 #define w_array_size(_array) (sizeof(_array) / sizeof(*(_array)))
 #define w_sizeof_field(type, field) (sizeof(((type*)0)->field))
+#define w_field_type(type, field) (((type*)0)->field)
 
 // https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
 #if defined(__GNUC__) && __GNUC__ >= 7
