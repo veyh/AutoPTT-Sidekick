@@ -120,6 +120,7 @@ struct const_fatptr_s {
 #define w_stb
 
 #define w_array_size(_array) (sizeof(_array) / sizeof(*(_array)))
+#define w_array_size_alt(_array) (sizeof(_array) / sizeof((_array)[0]))
 #define w_sizeof_field(type, field) (sizeof(((type*)0)->field))
 #define w_field_type(type, field) (((type*)0)->field)
 
