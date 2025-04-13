@@ -119,10 +119,27 @@ struct const_fatptr_s {
 // Indicates this is an STB object (see stb/stb_ds.h)
 #define w_stb
 
-#define w_array_size(_array) (sizeof(_array) / sizeof(*(_array)))
-#define w_array_size_alt(_array) (sizeof(_array) / sizeof((_array)[0]))
-#define w_sizeof_field(type, field) (sizeof(((type*)0)->field))
-#define w_field_type(type, field) (((type*)0)->field)
+// Actually length, not size!
+#define w_array_size(_array) \
+  (sizeof(_array) / sizeof(*(_array)))
+
+// Actually length, not size!
+#define w_array_size_alt(_array) \
+  (sizeof(_array) / sizeof((_array)[0]))
+
+#define w_sizeof_field(_type, _field) \
+  (sizeof(w_field_type(_type, _field)))
+
+#define w_field_type(_type, _field) \
+  (((_type*)0)->_field)
+
+// Actually length, not size!
+#define w_field_array_size(_type, _field) \
+  (sizeof(w_field_type(_type, _field)) / sizeof(*(w_field_type(_type, _field))))
+
+// Actually length, not size!
+#define w_field_array_size_alt(_type, _field) \
+  (sizeof(w_field_type(_type, _field)) / sizeof((w_field_type(_type, _field))[0]))
 
 // https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
 #if defined(__GNUC__) && __GNUC__ >= 7
