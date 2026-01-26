@@ -148,4 +148,11 @@ struct const_fatptr_s {
   #define w_intentional_fallthrough()
 #endif
 
+// TODO: [[nodiscard]] with C23
+#if defined(__GNUC__) || defined(__clang__)
+  #define w_nodiscard __attribute__ ((warn_unused_result))
+#else
+  #define w_nodiscard
+#endif
+
 #endif // __core_defs_h__
