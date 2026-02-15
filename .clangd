@@ -1,0 +1,24 @@
+CompileFlags:
+  Add: [
+    -std=c99,
+
+    -DLINTING,
+    -DUNIT_TESTING,
+    -Wall,
+    -DARCH=ARCH_AVR8,
+    -DDMBS_ARCH_AVR8,
+    -DF_CPU=16000000UL,
+    -DUSE_LUFA_CONFIG_HEADER,
+    -DARCH=ARCH_AVR8,
+    -DBOARD=BOARD_MINIMUS,
+
+    -I.,
+    -I./Config,
+    -I./deps/lufa,
+    -I./deps,
+    -I./../cmocka/include,
+  ]
+
+Diagnostics:
+  UnusedIncludes: None
+  MissingIncludes: None

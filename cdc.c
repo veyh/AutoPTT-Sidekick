@@ -29,11 +29,9 @@ void cdc_reset(void) {
 }
 
 void cdc_receive_byte(int_fast16_t byte) {
-  if (byte < 0) {
-    return;
+  if (byte >= 0) {
+    self.buf[self.buf_used++] = byte;
   }
-
-  self.buf[self.buf_used++] = byte;
 
   cdc_update();
 }

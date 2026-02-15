@@ -124,11 +124,45 @@ static void test_buffers_keyboard_commands(void **ts) {
   assert_int_equal(5, state.keys[0]);
 }
 
+static void test_processes_buffered_commands_even_if_no_new_data_arrives(void **ts) {
+  uint8_t two_commands[] = {
+    ACTION_keyboard_full_state,
+    1, // modifiers
+    4, 0, 0, 0, 0, 0,
+
+    ACTION_keyboard_full_state,
+    2, // modifiers
+    5, 0, 0, 0, 0, 0,
+  };
+
+  cdc_receive_bytes(two_commands, sizeof(two_commands));
+
+  {
+    struct keyboard_state_s state;
+    keyboard_get_state(&state);
+    assert_int_equal(1, state.key_count);
+    assert_int_equal(1, state.modifiers);
+    assert_int_equal(4, state.keys[0]);
+  }
+
+  keyboard_state_unlock();
+  cdc_receive_byte(-1);
+
+  {
+    struct keyboard_state_s state;
+    keyboard_get_state(&state);
+    assert_int_equal(1, state.key_count);
+    assert_int_equal(2, state.modifiers);
+    assert_int_equal(5, state.keys[0]);
+  }
+}
+
 int main(void) {
   const struct CMUnitTest tests[] = {
     cmocka_unit_test_setup(test_sets_leds, setup),
     cmocka_unit_test_setup(test_sets_full_keyboard_state, setup),
     cmocka_unit_test_setup(test_buffers_keyboard_commands, setup),
+    cmocka_unit_test_setup(test_processes_buffered_commands_even_if_no_new_data_arrives, setup),
   };
 
   return cmocka_run_group_tests(tests, NULL, NULL);
